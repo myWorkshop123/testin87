@@ -15,6 +15,42 @@ void performDeletions(vector <int> &elements,int k)
 
 }
 
+void changeOccurence(vector < pair <int , int> > &occurence , int firstVal)
+{
+    int left = firstVal + 1;
+    int right = firstVal - 1;
+
+    REP(i , 0 , occurence.size())
+    {
+        pair <int,int> check = occurence[i];
+        cout<<"check.first: "<<check.first<<endl;
+
+        if (check.first == left)
+        {
+            cout<<"eliminated left\n";
+            occurence.erase(occurence.begin()+i);
+
+        }
+
+        else if (check.first == right)
+        {
+            cout<<"eliminated right\n";
+            occurence.erase(occurence.begin()+ i);
+
+            
+        }
+
+        else if (check.first == firstVal)
+        {
+            cout<<"eliminated "<<firstVal<<"\n";
+            occurence.erase(occurence.begin() + i);
+
+        }
+        
+    }
+
+}
+
 int findMaxSum(vector<pair<int, int> > &occurences, vector<int> &elements)
 {
     pair<int, int> maxSum;
@@ -61,20 +97,25 @@ int findMaxSum(vector<pair<int, int> > &occurences, vector<int> &elements)
 
     if (maxSum.second > otherSum)
     {
+        cout << "this is findMaxSum() up condition\n";
+
 
 
         // occurence pair of k - 1 and k + 1
-        pair<int, int> msl, msr;
-        int k_left = maxSum.first-1 , k_right = maxSum.first+1;
 
         // Search for k_left and k_right pairs and then delete those pairs
+    
         // perform deletion from occurences
-        REP(i , 0 , occurences.size())
-        if (occurences[i].first == k_left || occurences[i].first == k_right || occurences[i] == maxSum )
-        {
-            occurences.erase(remove(occurences.begin() , occurences.end() , occurences[i]) , occurences.end() );
 
-        }
+        changeOccurence(occurences , maxSum.first);
+
+     
+       
+        //todo
+        cout<<"occurence after removal down ";
+        REP( i , 0 , occurences.size())
+        cout<<occurences[i].first<<" ";
+        cout<<endl;
 
 
         // remove k // this will delete all k , k-1 , k+1 from elements
@@ -82,11 +123,12 @@ int findMaxSum(vector<pair<int, int> > &occurences, vector<int> &elements)
 
 
         answer = maxSum.second;
-        cout << "this is findMaxSum() up condition\n";
         return answer;
     }
     else
     {
+        cout << "this is findMaxSum() down condition\n";
+
         // eliminate that maxsum pair from occurence and again call the function
         // Find secondMax
         pair <int , int> secondMax = occurences[0];
@@ -101,28 +143,28 @@ int findMaxSum(vector<pair<int, int> > &occurences, vector<int> &elements)
             }
         }
 
-        maxSum = secondMax;
+        
 
 
         pair<int, int> msl, msr;
-        int k_left = maxSum.first-1 , k_right = maxSum.first+1;
-
+        int k_left = secondMax.first-1 , k_right = secondMax.first+1;
+        cout<<"secondMax: "<<secondMax.first<<" left: "<<k_left<<" right: "<<k_right<<'\n';
         // Search for k_left and k_right pairs and then delete those pairs
         // perform deletion from occurences
-        REP(i , 0 , occurences.size())
-        if (occurences[i].first == k_left || occurences[i].first == k_right || occurences[i] == maxSum )
-        {
-            occurences.erase(remove(occurences.begin() , occurences.end() , occurences[i]) , occurences.end() );
 
-        }
+        changeOccurence(occurences  , secondMax.first);
 
+         //todo
+        cout<<"occurence after removal down ";
+        REP( i , 0 , occurences.size())
+        cout<<occurences[i].first<<" ";
+        cout<<endl;
 
         // remove k // this will delete all k , k-1 , k+1 from elements
-        performDeletions(elements , maxSum.first);
+        performDeletions(elements , secondMax.first);
 
 
-        answer = maxSum.second;
-        cout << "this is findMaxSum() up condition\n";
+        answer = secondMax.second;
         return answer;
 
 
@@ -140,16 +182,18 @@ int findMaxSum(vector<pair<int, int> > &occurences, vector<int> &elements)
 int main()
 {
 
-    int n;
-    cin >> n;
+    // todo
+    // int n;
+    // cin >> n;
     int score = 0;
-    vector<int> elements;
-    int elm;
-    REP(i, 0, n)
-    {
-        cin >> elm;
-        elements.push_back(elm);
-    }
+    // vector<int> elements;
+    // int elm;
+    // REP(i, 0, n)
+    // {
+    //     cin >> elm;
+    //     elements.push_back(elm);
+    // }
+    vector <int> elements {3 ,3,4,5,4};
 
 
     // sort the elements first
